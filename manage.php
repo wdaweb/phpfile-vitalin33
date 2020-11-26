@@ -28,28 +28,56 @@
             border:1px solid #ccc;
             padding:5px;
         }
+
+        a.firstEdit{
+            border:1px solid transparent;
+            border-radius:20%;
+            padding:3px 8px;
+            color:#eee;
+            background:lightblue;
+        }
+
+        a.secondEdit{
+            border:1px solid transparent;
+            border-radius:20%;
+            padding:3px 8px;
+            color:#eee;
+            background:red;
+
+        }
+
+        table th{
+            text-align: center;
+            background-color: pink;
+
+
+        }
     </style>
 </head>
 <body>
+
 <h1 class="header">檔案管理練習</h1>
 <!----建立上傳檔案表單及相關的檔案資訊存入資料表機制----->
 <!-------------- 建立一個連結來查看上傳後的圖檔  ------------------>
 
+    
+        <a href="upload.php" class="btn btn-warning text-center mx-auto d-block" style="width:100px; margin-bottom:20px">檔案上傳</a>
+ 
     <?php
     include_once "base.php";
         $rows=all('upload');
         echo "<table>";   //撈出所有資料，以表格呈現
-        echo "<td>縮圖</td>";
-        echo "<td>檔案名稱</td>";
-        echo "<td>檔案類型</td>";
-        echo "<td>檔案說明</td>";
-        echo "<td>下載</td>";
-        echo "<td>操作</td>";
+        echo "<th>縮圖</th>";
+        echo "<th>檔案名稱</th>";
+        echo "<th>檔案類型</th>";
+        echo "<th>檔案說明</th>";
+        echo "<th>下載</th>";
+        echo "<th>操作</th>";
         foreach($rows as $row){
             
             echo "<tr>";
                 if($row['type']=='圖檔'){
-                echo "<td><img src='{$row['path']}' style='width:100px'></td>";
+                echo "<td><img src='{$row['path']}' style='width:50px'></td>";
                                
                 }else{
                 echo "<td><img src='./img/file_icon.png' style='width:20px'></td>";
@@ -58,18 +86,19 @@
                 echo "<td>{$row['type']}</td>";  
                 echo "<td>{$row['note']}</td>";  
                 echo "<td><a href='{$row['path']}' download>下載</a></td>";
-                echo "<td><a href=''>編輯</a><a href=''>刪除</a></td>";  //有些人會在這裡夾上表單，用submit，範例在下方
+                echo "<td>　<a href='edit.php?id={$row['id']}' class='firstEdit'>編輯</a>
+                          　<a href='del.php?id={$row['id']}' class='secondEdit'>刪除</a>　
+                     </td>";  //有些人會在這裡夾上表單，用submit，範例在下方
             echo "</tr>";
-
+                //這邊的刪除是只有資料庫被刪除，合理的刪除應該是要連硬碟裡面的資料都刪掉
                 
 
         }
         echo "</table>";
 
-            print_r($_POST);
      ?>
 
-<!-- 
+<!-- 夾上表單範例：
      <form action="?">
      <input type="submit" value="刪除">
      </form> 

@@ -34,7 +34,7 @@
 
         $fileName=date("Ymdhis").".".$subname;//讓系統自動產出檔名
         move_uploaded_file($_FILES['img']['tmp_name'],"./images/".$fileName);    //要上傳的檔案名稱，再接上上傳目的地，檔案上傳成功後就以原始檔名來命名
-        //move_uploaded_file($_FILES['img']['tmp_name'],"./images/".$_FILES['img']['name']);    //要上傳的檔案名稱，再接上上傳目的地，檔案上傳成功後就以原始檔名來命名
+        //move_uploaded_file($_FILES['img']['tmp_name'],"./images/".$_FILES['img']['name']);  
 
     /* 建立一個連結來查看上傳後的圖檔 */
              //echo "<img src='/images/$fileName' style='width:200px'>";    //僅上傳圖片可用，用來顯示剛上傳的圖片檔案
@@ -50,6 +50,8 @@
         print_r($row);
         save("upload",$row);
 
+
+        to('manage.php');
     }
 
 
@@ -64,16 +66,18 @@
     <title></title>
     <link rel="stylesheet" href="style.css">
     <style>
-        table{
-            border:3px double #ccc;
-            padding:20px;
-            border-collapse:collapse;
+        form{
+            border:3px solid blue;
+            margin:auto;
+            padding: 20px;
+            width: 500px;
+
         }
 
-        td{
-            border:1px solid #ccc;
-            padding:5px;
+        form div{
+            margin:5px 0;
         }
+
     </style>
 
 </head>
@@ -92,48 +96,10 @@
         <option value="圖檔">圖檔</option> 
         <option value="文件">文件</option>
         <option value="其它">其它</option>
-    </select></div>
-
- 
+    </select></div> 
     <input type="submit" value="上傳">
 
     </form>
-
-     <!-------------- 建立一個連結來查看上傳後的圖檔  ------------------>
-
-     <?php
-        $rows=all('upload');
-        echo "<table>";   //撈出所有資料，以表格呈現
-        echo "<td>縮圖</td>";
-        echo "<td>檔案名稱</td>";
-        echo "<td>檔案類型</td>";
-        echo "<td>檔案說明</td>";
-        echo "<td>下載</td>";
-        foreach($rows as $row){
-            
-            echo "<tr>";
-                if($row['type']=='圖檔'){
-                echo "<td><img src='{$row['path']}' style='width:100px'></td>";
-                               
-                }else{
-                echo "<td><img src='./img/file_icon.png' style='width:20px'></td>";
-                }
-                echo "<td>{$row['name']}</td>";  //如果有很多欄位，可以再加一個foreach，如果只需要特定欄位，條列式即可
-                echo "<td>{$row['type']}</td>";  
-                echo "<td>{$row['note']}</td>";  
-                echo "<td><a href='{$row['path']}' download>下載</a></td>";
-            echo "</tr>";
-
-                
-
-        }
-        echo "</table>";
-
-     ?>
-
-
- 
-
 
 
 </body>

@@ -28,21 +28,21 @@ date_default_timezone_set("Asia/Taipei");
 function find($table,$id){  //本語法預設只會取回一筆資料
     global $pdo;
     $sql="select * from $table where";
-    if(is_array($id)){  //可以用is_numertic判斷是否是數字，或是用is_array判斷是否為陣列
+         if(is_array($id)){  //可以用is_numertic判斷是否是數字，或是用is_array判斷是否為陣列
 
-        foreach($id as $key => $value){
-            // echo $key."='".$value."'&&";    這樣做的話會在最後又跑出"&&"，也不能用，所以優化如下          
-            //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-            //$tmp[]=$key."='".$value."'";        //利用一個暫時的陣列來存放語句的片段
-            $tmp[]=sprintf("`%s`='%s'",$key,$value);        //寫法二：sprintf：可以先決定字串的函式，%s是字串，%d是數字
+            foreach($id as $key => $value){
+                // echo $key."='".$value."'&&";    這樣做的話會在最後又跑出"&&"，也不能用，所以優化如下          
+                //↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+                //$tmp[]=$key."='".$value."'";        //利用一個暫時的陣列來存放語句的片段
+                $tmp[]=sprintf("`%s`='%s'",$key,$value);        //寫法二：sprintf：可以先決定字串的函式，%s是字串，%d是數字
+            }
+            $sql=$sql.implode('&&',$tmp);  //如果輸入的不是數字/是陣列的話就用這一段       
+        }else{
+            $sql=$sql." id = '$id' "; //如果是數字/不是陣列的話就用這一段
         }
-        $sql=$sql.implode('&&',$tmp);  //如果輸入的不是數字/是陣列的話就用這一段       
-    }else{
-        $sql=$sql." id = '$id' "; //如果是數字/不是陣列的話就用這一段
+        $row=$pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+        return $row;
     }
-    $row=$pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
-    return $row;
-}
 
         function all($table, ...$arg){      
             global $pdo;
