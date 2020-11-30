@@ -9,6 +9,14 @@
  *   ->圖形驗證碼
  * 5.輸出檔案
  */
+    if(!empty($_FILES['photo']['tmp_name'])){   //有上傳成功的話，就可以拿到檔案名稱
+
+            echo "檔名：".$_FILES['photo']['name']."<br>";
+            echo "格式：".$_FILES['photo']['type']."<br>";
+            echo "大小：".round(($_FILES['photo']['size'])/1024)."<br>";
+            move_uploaded_file($_FILES['photo']['tmp_name'],'./images/'.$_FILES['photo']['name']);
+
+    }
 
 ?>
 <!DOCTYPE html>
@@ -23,10 +31,21 @@
 <body>
 <h1 class="header">圖形處理練習</h1>
 <!---建立檔案上傳機制--->
+    <form action="?" method="post" enctype="multipart/form-data">
+    <input type="file" name="photo" id="">
+    <input type="submit" value="上傳">
 
+    </form>
 
+    <h3>原始圖形</h3>
+    <hr>
+    <div>
+    <img src="<?="./images/".$_FILES['photo']['name'];?>">    
+    </div>
 
 <!----縮放圖形----->
+    <h3>縮放圖形</h3>
+    <hr>
 
 
 <!----圖形加邊框----->
